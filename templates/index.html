@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Assistant</title>
+</head>
+<body>
+    <div class="container">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+   
+    <h1>🤖 AI Assistant Chat</h1>
+
+    <form method="POST">
+        <label for="task">Select a function:</label>
+        <select id="task" name="task" required>
+            <option value="qa">Answer Questions</option>
+            <option value="summary">Summarize Text</option>
+            <option value="creative">Creative Content</option>
+        </select>
+
+        <textarea name="user_input" rows="4" placeholder="Type your question or text here..." required></textarea>
+
+        <button type="submit">Send</button>
+    </form>
+
+    {% if result %}
+        <div class="chat-box">
+            <div class="chat-message user-message">
+                <div class="message">{{ request.form.user_input }}</div>
+            </div>
+            <div class="chat-message ai-message">
+                <div class="message">{{ result }}</div>
+            </div>
+        </div>
+
+        <form class="feedback-form" method="POST">
+            <!-- Pass back user input and task to keep state -->
+            <input type="hidden" name="task" value="{{ request.form.task }}">
+            <input type="hidden" name="user_input" value="{{ request.form.user_input }}">
+            <label>Was this response helpful?</label><br>
+            <button type="submit" name="feedback" value="yes" class="feedback-yes">Yes</button>
+            <button type="submit" name="feedback" value="no" class="feedback-no">No</button>
+            <p>{{ feedback }}</p>
+        </form>
+    {% endif %}
+    </div>
+</body>
+</html>
